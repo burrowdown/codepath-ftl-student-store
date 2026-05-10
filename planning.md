@@ -114,3 +114,19 @@ All error responses will be {"error": "message goes here"}
 - **Field decision I made during implementation that wasn't in the original spec**: The ability to delete OrderItems (via cascade from a deleted product) means an order's Total Price will sometimes get out of sync. I decided to leave this alone in the model/routes, and will handle it by double checking the total price before updating order status at a later time.
 
 - **Route behavior that needed a spec update**: I didn't need to change the spec at all, I had already thought through all the edge cases (with Claude's help)
+
+#### OrderItem Model
+
+I went ahead and wrote the model for the sake of assignment completeness, but I don't think it was actually necessary and I don't plan to use the model. We'll see if I'm wrong in later stages of the assignment.
+
+Something to note: The assignment instructed using `onDelete: Cascade` on both the Order and Product relationships. I kept `onDelete: Restrict` on the Product side to match my own spec, which forbids deleting a product that has OrderItems on SHIPPED or DELIVERED orders. The nuanced business rule (block delete only when the product appears in a SHIPPED/DELIVERED order; otherwise clear the OrderItems on non-shipped orders and proceed) is enforced in [`Product.delete`](student-store-api/src/models/product.js) and surfaced as a 409 (`PRODUCT_DELETE_BLOCKED`) by the route layer.
+
+#### Cascade delete verification
+
+- Deleting a Product removes associated OrderItems: ✅ tested
+- Deleting an Order removes associated OrderItems: ✅ tested
+- Cannot delete Product with SHIPPED OrderItems
+
+#### Order Creation Transaction
+
+I didn't write a Transactional Flow spec because it made more sense to me to specify all the behavior in the endpoints spec, and then decide what logic lives in the model and what lives in the route at write time. Prisma has utilities to handle all of the actual transactions, it's inefficient (both in terms of my time and of compute power) for me to specify it myself.
