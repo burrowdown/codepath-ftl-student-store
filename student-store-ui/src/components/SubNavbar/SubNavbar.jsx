@@ -3,7 +3,14 @@ import "./SubNavbar.css"
 function SubNavbar({ activeCategory, setActiveCategory, searchInputValue, handleOnSearchInputChange }) {
 
 
-  const categories = ["All Categories", "Accessories", "Apparel", "Books", "Snacks", "Supplies"];
+  const categories = [
+    { label: "All Categories", value: "All Categories" },
+    { label: "Accessories", value: "ACCESSORIES" },
+    { label: "Apparel", value: "APPAREL" },
+    { label: "Books", value: "BOOKS" },
+    { label: "Snacks", value: "SNACKS" },
+    { label: "Supplies", value: "SUPPLIES" },
+  ];
 
   return (
     <nav className="SubNavbar">
@@ -26,8 +33,8 @@ function SubNavbar({ activeCategory, setActiveCategory, searchInputValue, handle
         <div className="row">
           <ul className={`category-menu`}>
             {categories.map((cat) => (
-              <li className={activeCategory === cat ? "is-active" : ""} key={cat}>
-                <button onClick={() => setActiveCategory(cat)}>{cat}</button>
+              <li className={activeCategory === cat.value ? "is-active" : ""} key={cat.value}>
+                <button onClick={() => setActiveCategory(cat.value)}>{cat.label}</button>
               </li>
             ))}
           </ul>

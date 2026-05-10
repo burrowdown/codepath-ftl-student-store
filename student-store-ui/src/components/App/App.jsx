@@ -9,6 +9,8 @@ import NotFound from "../NotFound/NotFound";
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart";
 import "./App.css";
 
+const API_BASE_URL = "http://localhost:3001";
+
 function App() {
 
   // State variables
@@ -36,8 +38,42 @@ function App() {
     setSearchInputValue(event.target.value);
   };
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsFetching(true);
+      setError(null);
+      try {
+        const res = await axios.get(`${API_BASE_URL}/products`);
+        setProducts(res.data);
+      } catch (err) {
+        setError(err.response?.data?.error || err.message || "Failed to load products");
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const handleOnCheckout = async () => {
-  }
+    setIsCheckingOut(true);
+    setError(null);
+    try {
+      const items = Object.entries(cart).map(([productId, quantity]) => ({
+        product_id: Number(productId),
+        quantity,
+      }));
+      const res = await axios.post(`${API_BASE_URL}/orders`, {
+        customer_id: 1,
+        items,
+      });
+      setOrder(res.data);
+      setCart({});
+    } catch (err) {
+      setError(err.response?.data?.error || err.message || "Checkout failed");
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
 
   return (

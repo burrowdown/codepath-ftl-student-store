@@ -12,5 +12,5 @@ const formatter = new Intl.NumberFormat("en-US", {
 })
 
 export const formatPrice = (amount) => {
-  return `$${formatter.format(amount)}`
+  return `$${formatter.format(Number(amount))}`
 }

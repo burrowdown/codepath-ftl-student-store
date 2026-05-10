@@ -1,24 +1,15 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import NotFound from "../NotFound/NotFound";
 import { formatPrice } from "../../utils/format";
 import "./ProductDetail.css";
 
-function ProductDetail({ addToCart, removeFromCart, getQuantityOfItemInCart }) {
-  
+function ProductDetail({ products, addToCart, removeFromCart, getQuantityOfItemInCart }) {
+
   const { productId } = useParams();
-  const [product, setProduct] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(null);
+  const product = products.find((p) => String(p.id) === productId);
 
-
-  if (error) {
+  if (!product) {
     return <NotFound />;
-  }
-
-  if (isFetching || !product) {
-    return <h1>Loading...</h1>;
   }
 
   const quantity = getQuantityOfItemInCart(product);
@@ -39,7 +30,7 @@ function ProductDetail({ addToCart, removeFromCart, getQuantityOfItemInCart }) {
     <div className="ProductDetail">
       <div className="product-card">
         <div className="media">
-          <img src={product.image_url || "/placeholder.png"} alt={product.name} />
+          <img src={product.imageUrl || "/placeholder.png"} alt={product.name} />
         </div>
         <div className="product-info">
           <p className="product-name">{product.name}</p>
