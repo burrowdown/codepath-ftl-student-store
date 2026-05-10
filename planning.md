@@ -98,3 +98,13 @@ All error responses will be {"error": "message goes here"}
   - success response: 200, copy of the deleted resource
   - if order doesn't exist, respond 404
   - if order has status PAID, SHIPPED, or DELIVERED, don't delete, respond 409 with message "Cannot delete orders which have been {status in lower case}. Mark order as canceled instead."
+
+## Decisions Log
+
+#### Products Model
+
+- **Schema translation that went smoothly**: I already specified Decimal for currency, because I had asked Claude what would be best
+
+- **Field decision I made during implementation that wasn't in the original spec**: The ability to delete OrderItems (via cascade from a deleted product) means an order's Total Price will sometimes get out of sync. I decided to leave this alone in the model/routes, and will handle it by double checking the total price before updating order status at a later time.
+
+- **Route behavior that needed a spec update**: I didn't need to change the spec at all, I had already thought through all the edge cases (with Claude's help)

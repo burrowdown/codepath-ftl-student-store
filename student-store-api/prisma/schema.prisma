@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -11,4 +7,55 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum ProductCategory {
+  ACCESSORIES
+  APPAREL
+  BOOKS
+  SNACKS
+  SUPPLIES
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+model Product {
+  id          Int             @id @default(autoincrement())
+  name        String          @db.VarChar(80)
+  description String          @db.VarChar(500)
+  price       Decimal         @db.Decimal(10, 2)
+  imageUrl    String?
+  category    ProductCategory
+  available   Boolean         @default(true)
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  customerId Int
+  totalPrice Decimal     @db.Decimal(10, 2)
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime    @default(now())
+
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int     @default(1)
+  price     Decimal @db.Decimal(10, 2)
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([orderId, productId])
 }
