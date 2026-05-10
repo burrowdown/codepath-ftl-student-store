@@ -1,6 +1,7 @@
 const express = require("express")
 
 const productsRouter = require("./routes/products")
+const ordersRouter = require("./routes/orders")
 
 const app = express()
 
@@ -11,6 +12,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/products", productsRouter)
+app.use("/orders", ordersRouter)
 
 const PORT = process.env.PORT || 3001
 
