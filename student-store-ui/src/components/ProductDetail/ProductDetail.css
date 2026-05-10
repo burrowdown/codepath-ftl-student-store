@@ -8,6 +8,18 @@
   padding-bottom: 50px;
 }
 
+.ProductDetail .back-link {
+  align-self: flex-start;
+  margin: 16px 24px;
+  text-decoration: none;
+  color: var(--link-color, #0066cc);
+  font-size: 14px;
+}
+
+.ProductDetail .back-link:hover {
+  text-decoration: underline;
+}
+
 .ProductDetail .product-card {
   min-height: 350px;
   max-width: 600px;

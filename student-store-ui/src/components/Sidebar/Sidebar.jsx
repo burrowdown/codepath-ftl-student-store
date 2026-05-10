@@ -6,6 +6,8 @@ import "./Sidebar.css"
 
 function Sidebar({ cart, isOpen, products, userInfo, setUserInfo, toggleSidebar, handleOnCheckout,isCheckingOut, order, setOrder,error,}) {
   return (
+    <>
+      {isOpen && <div className="Sidebar-backdrop" onClick={toggleSidebar} />}
     <section className={`Sidebar ${isOpen ? "open" : "closed"}`}>
 
       <div className="wrapper">
@@ -36,6 +38,7 @@ function Sidebar({ cart, isOpen, products, userInfo, setUserInfo, toggleSidebar,
         
       </div>
     </section>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import NotFound from "../NotFound/NotFound";
 import { formatPrice } from "../../utils/format";
 import "./ProductDetail.css";
@@ -28,6 +28,7 @@ function ProductDetail({ products, addToCart, removeFromCart, getQuantityOfItemI
 
   return (
     <div className="ProductDetail">
+      <Link to="/" className="back-link">← Back to products</Link>
       <div className="product-card">
         <div className="media">
           <img src={product.imageUrl || "/placeholder.png"} alt={product.name} />

@@ -47,6 +47,27 @@
   justify-content: center;
   align-items: center;
 }
+.SubNavbar .content .sort-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-left: 20px;
+}
+.SubNavbar .content .sort-control label {
+  font-size: 14px;
+  color: var(--font-dark);
+  font-weight: 500;
+}
+.SubNavbar .content .sort-control select {
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: solid 1px #e4e4e4;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
 .SubNavbar .content .links {
   display: flex;
   flex-direction: row;

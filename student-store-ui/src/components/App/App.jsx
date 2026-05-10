@@ -17,6 +17,7 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All Categories");
   const [searchInputValue, setSearchInputValue] = useState("");
+  const [sortBy, setSortBy] = useState("");
   const [userInfo, setUserInfo] = useState({ name: "", dorm_number: ""});
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
@@ -43,7 +44,8 @@ function App() {
       setIsFetching(true);
       setError(null);
       try {
-        const res = await axios.get(`${API_BASE_URL}/products`);
+        const url = `${API_BASE_URL}/products?available=true${sortBy ? `&sort=${sortBy}` : ""}`;
+        const res = await axios.get(url);
         setProducts(res.data);
       } catch (err) {
         setError(err.response?.data?.error || err.message || "Failed to load products");
@@ -52,7 +54,7 @@ function App() {
       }
     };
     fetchProducts();
-  }, []);
+  }, [sortBy]);
 
   const handleOnCheckout = async () => {
     setIsCheckingOut(true);
@@ -102,6 +104,8 @@ function App() {
             setActiveCategory={setActiveCategory}
             searchInputValue={searchInputValue}
             handleOnSearchInputChange={handleOnSearchInputChange}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
           />
           <Routes>
             <Route
