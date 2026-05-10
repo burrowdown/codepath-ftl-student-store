@@ -1,8 +1,23 @@
 const prisma = require("../db/db");
+const { ProductCategory } = require("@prisma/client");
 
 class Product {
-  static async list() {
-    return prisma.product.findMany();
+  static async list({ category, sort, available, search } = {}) {
+    if (category !== undefined && !(category in ProductCategory)) {
+      return [];
+    }
+
+    const where = {};
+    if (category !== undefined) where.category = category;
+    if (available !== undefined) where.available = available;
+    if (search) where.name = { contains: search, mode: "insensitive" };
+
+    const orderBy =
+      sort === "price" ? { price: "asc" } :
+      sort === "name" ? { name: "asc" } :
+      undefined;
+
+    return prisma.product.findMany({ where, orderBy });
   }
 
   static async get(id) {

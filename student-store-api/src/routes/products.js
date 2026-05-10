@@ -15,7 +15,7 @@ const UPDATEABLE_FIELDS = [
 
 router.get("/", async (req, res, next) => {
   try {
-    const products = await Product.list();
+    const products = await Product.list(parseListFilters(req.query));
     res.json(products);
   } catch (err) {
     next(err);
@@ -79,6 +79,29 @@ router.delete("/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+function parseListFilters(query) {
+  const filters = {};
+
+  if (query.category !== undefined) {
+    filters.category = String(query.category).toUpperCase();
+  }
+
+  const sort = typeof query.sort === "string" ? query.sort.toLowerCase() : undefined;
+  if (sort === "price" || sort === "name") {
+    filters.sort = sort;
+  }
+
+  const available = typeof query.available === "string" ? query.available.toLowerCase() : undefined;
+  if (available === "true") filters.available = true;
+  else if (available === "false") filters.available = false;
+
+  if (typeof query.search === "string" && query.search.trim() !== "") {
+    filters.search = query.search.trim();
+  }
+
+  return filters;
+}
 
 function parseId(value) {
   const id = Number.parseInt(value, 10);

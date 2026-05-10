@@ -36,8 +36,14 @@ All error responses will be {"error": "message goes here"}
 
 - `GET /products`: Fetch a list of all products.
   - success response: 200, the resource
-  - include all products, including `available: false`
   - if no products exist, respond 200 with []
+  - QUERY PARAMS (all optional, if none present return all item unordered)
+    - `category`: maps to category enum, returns only products with that category. (If category does not exist, return [])
+    - `sort`: values:
+      - price returns items sorted by price, low to high
+      - name returns items sorted alphabetically
+    - `available`: if true, return all items with available true, if false, return all false items
+    - `search`: arbitrary string, return all items whose `name` includes this substring
 - `GET /products/:id`: (url param: product id) Fetch details of a specific
   product by its ID.
   - success response: 200, the resource
