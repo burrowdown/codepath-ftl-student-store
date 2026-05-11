@@ -107,6 +107,79 @@ class Order {
     });
   }
 
+  static async addItem(orderId, { productId, quantity }) {
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      throwError("ORDER_INVALID_QUANTITY", "quantity must be a positive integer");
+    }
+    if (!Number.isInteger(productId)) {
+      throwError("ORDER_INVALID_PRODUCT", "invalid product id");
+    }
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: { orderItems: true },
+    });
+    if (!order) {
+      throwError("P2025", "order not found");
+    }
+
+    if (order.status !== "PENDING") {
+      throwError(
+        "ORDER_NOT_MODIFIABLE",
+        `Cannot add items to an order with status ${order.status.toLowerCase()}`
+      );
+    }
+
+    const product = await prisma.product.findUnique({ where: { id: productId } });
+    if (!product) {
+      throwError(
+        "ORDER_INVALID_PRODUCT",
+        `invalid product id: ${productId}`,
+        { productId }
+      );
+    }
+    if (!product.available) {
+      throwError(
+        "ORDER_UNAVAILABLE_PRODUCT",
+        `Sorry, ${product.name} is not available`,
+        { productId }
+      );
+    }
+
+    const existing = order.orderItems.find((it) => it.productId === productId);
+    const snapshotPrice = existing ? existing.price : product.price;
+    const priceIncrease = snapshotPrice.times(quantity);
+    const newTotalPrice = new Prisma.Decimal(order.totalPrice).plus(priceIncrease);
+
+    const ops = existing
+      ? [
+          prisma.orderItem.update({
+            where: { id: existing.id },
+            data: { quantity: existing.quantity + quantity },
+          }),
+          prisma.order.update({
+            where: { id: orderId },
+            data: { totalPrice: newTotalPrice },
+          }),
+        ]
+      : [
+          prisma.orderItem.create({
+            data: { orderId, productId, quantity, price: snapshotPrice },
+          }),
+          prisma.order.update({
+            where: { id: orderId },
+            data: { totalPrice: newTotalPrice },
+          }),
+        ];
+
+    await prisma.$transaction(ops);
+
+    return prisma.order.findUnique({
+      where: { id: orderId },
+      include: { orderItems: true },
+    });
+  }
+
   static async delete(id) {
     const order = await prisma.order.findUnique({
       where: { id },

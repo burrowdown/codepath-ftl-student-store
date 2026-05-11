@@ -82,6 +82,33 @@ router.put("/:order_id", async (req, res, next) => {
   }
 });
 
+router.post("/:order_id/items", async (req, res, next) => {
+  try {
+    const orderId = parseId(req.params.order_id);
+    if (orderId === null) return notFound(res);
+
+    const body = req.body || {};
+    const order = await Order.addItem(orderId, {
+      productId: body.product_id,
+      quantity: body.quantity,
+    });
+    res.status(201).json(order);
+  } catch (err) {
+    if (err.code === "P2025") return notFound(res);
+    if (err.code === "ORDER_INVALID_PRODUCT") {
+      return res.status(422).json({ error: err.message });
+    }
+    if (err.code === "ORDER_UNAVAILABLE_PRODUCT" || err.code === "ORDER_NOT_MODIFIABLE") {
+      return res.status(409).json({ error: err.message });
+    }
+    if (err.code === "ORDER_INVALID_QUANTITY") {
+      return res.status(400).json({ error: err.message });
+    }
+    if (isClientInputError(err)) return badRequest(res);
+    next(err);
+  }
+});
+
 router.delete("/:order_id", async (req, res, next) => {
   try {
     const id = parseId(req.params.order_id);

@@ -3,6 +3,7 @@ const cors = require("cors")
 
 const productsRouter = require("./routes/products")
 const ordersRouter = require("./routes/orders")
+const orderItemsRouter = require("./routes/orderItems")
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 
 app.use("/products", productsRouter)
 app.use("/orders", ordersRouter)
+app.use("/order-items", orderItemsRouter)
 
 const PORT = process.env.PORT || 3001
 
