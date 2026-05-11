@@ -1,10 +1,6 @@
-📝 `NOTE` Use this template to initialize the contents of a README.md file for your application. As you work on your assignment over the course of the week, update the required or stretch features lists to indicate which features you have completed by changing `[ ]` to `[x]`. (🚫 Remove this paragraph before submitting your assignment.)
-
 ## Unit Assignment: Student Store
 
-Submitted by: **NAME**
-
-Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
+Submitted by: **Danny Burrow**
 
 ### Application Features
 
@@ -98,28 +94,26 @@ Deployed Application (optional): [Student Store Deployed Site](ADD_LINK_HERE)
 
 ### Walkthrough Video
 
-`TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after adding walkthrough video)
-
-`ADD_EMBEDDED_CODE_HERE`
+[Walkthrough video](https://www.loom.com/share/30b5a2eab6794801a8be8d2d4a36038e)
 
 ### Reflection
 
 - Did the topics discussed in your labs prepare you to complete the assignment? Be specific, which features in your weekly assignment did you feel unprepared to complete?
 
-Add your response here
+Didn't use them
 
 - If you had more time, what would you have done differently? Would you have added additional features? Changed the way your project responded to a particular event, etc.
 
-Add your response here
+I didn't plan ahead for customer_email, so I had to do a migration later.
 
 - Reflect on your project demo, what went well? Were there things that maybe didn't go as planned? Did you notice something that your peer did that you would like to try next time?
 
-Add your response here
+I should have saved a collection of requests in Postman in advance, instead of pausing to make new ones constantly
 
 ### Open-source libraries used
 
-- Add any links to open-source libraries used in your project.
+Just the required ones
 
 ### Shout out
 
-Give a shout out to somebody from your cohort that especially helped you during your project. This can be a fellow peer, instructor, TA, mentor, etc.
+Thanks Jude for extending the deadlines, this took longer than I thought it was going to
