@@ -1,0 +1,98 @@
+.PastOrders {
+  width: 100%;
+  max-width: var(--content-width, 1100px);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.PastOrders .back-link {
+  text-decoration: none;
+  color: var(--link-color, #0066cc);
+  font-size: 14px;
+}
+
+.PastOrders .back-link:hover {
+  text-decoration: underline;
+}
+
+.PastOrders h2 {
+  margin: 20px 0;
+}
+
+.PastOrders .filter-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.PastOrders .filter-form input {
+  flex: 1;
+  max-width: 400px;
+  height: 38px;
+  padding: 0 12px;
+  border: solid 1px #e4e4e4;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.PastOrders .filter-form button {
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--bright-green, #28a745);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.PastOrders .filter-form .clear-button {
+  background: transparent;
+  color: var(--link-color, #0066cc);
+  text-decoration: underline;
+  padding: 0 8px;
+}
+
+.PastOrders .error {
+  color: #b00020;
+}
+
+.PastOrders .empty {
+  color: #666;
+  font-style: italic;
+}
+
+.PastOrders .orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.PastOrders .orders-table th,
+.PastOrders .orders-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: solid 1px #eee;
+}
+
+.PastOrders .orders-table th {
+  background: #f7f7f7;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.PastOrders .orders-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.PastOrders .orders-table a {
+  color: var(--link-color, #0066cc);
+  text-decoration: none;
+}
+
+.PastOrders .orders-table a:hover {
+  text-decoration: underline;
+}

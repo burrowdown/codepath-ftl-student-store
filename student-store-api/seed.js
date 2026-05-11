@@ -43,7 +43,7 @@ async function seed() {
     for (const order of ordersData.orders) {
       const createdOrder = await prisma.order.create({
         data: {
-          customerId: order.customer_id,
+          customerEmail: order.customer_email,
           totalPrice: order.total_price,
           status: ORDER_STATUS_MAP[order.status] ?? order.status.toUpperCase(),
           createdAt: new Date(order.created_at),

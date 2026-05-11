@@ -5,6 +5,8 @@ import SubNavbar from "../SubNavbar/SubNavbar";
 import Sidebar from "../Sidebar/Sidebar";
 import Home from "../Home/Home";
 import ProductDetail from "../ProductDetail/ProductDetail";
+import PastOrders from "../PastOrders/PastOrders";
+import OrderDetail from "../OrderDetail/OrderDetail";
 import NotFound from "../NotFound/NotFound";
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart";
 import "./App.css";
@@ -18,7 +20,7 @@ function App() {
   const [activeCategory, setActiveCategory] = useState("All Categories");
   const [searchInputValue, setSearchInputValue] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [userInfo, setUserInfo] = useState({ name: "", dorm_number: ""});
+  const [userInfo, setUserInfo] = useState({ email: "", dorm_number: ""});
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [isFetching, setIsFetching] = useState(false);
@@ -65,7 +67,7 @@ function App() {
         quantity,
       }));
       const res = await axios.post(`${API_BASE_URL}/orders`, {
-        customer_id: 1,
+        customer_email: userInfo.email,
         items,
       });
       setOrder(res.data);
@@ -123,6 +125,14 @@ function App() {
                   getQuantityOfItemInCart={handleGetItemQuantity}
                 />
               }
+            />
+            <Route
+              path="/orders"
+              element={<PastOrders />}
+            />
+            <Route
+              path="/orders/:orderId"
+              element={<OrderDetail />}
             />
             <Route
               path="/:productId"

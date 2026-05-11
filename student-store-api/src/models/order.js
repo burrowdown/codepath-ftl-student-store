@@ -12,18 +12,23 @@ const STATUS_TRANSITIONS = {
 const UNDELETABLE_STATUSES = ["PAID", "SHIPPED", "DELIVERED"];
 
 class Order {
-  static async list() {
-    return prisma.order.findMany();
+  static async list({ customerEmail } = {}) {
+    const where = {};
+    if (customerEmail !== undefined) where.customerEmail = customerEmail;
+    return prisma.order.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+    });
   }
 
   static async get(id) {
     return prisma.order.findUnique({
       where: { id },
-      include: { orderItems: true },
+      include: { orderItems: { include: { product: true } } },
     });
   }
 
-  static async create({ customerId, items }) {
+  static async create({ customerEmail, items }) {
     if (!Array.isArray(items)) {
       throwError("ORDER_EMPTY_ITEMS", "Order must include items");
     }
@@ -80,7 +85,7 @@ class Order {
 
     return prisma.order.create({
       data: {
-        customerId,
+        customerEmail,
         totalPrice,
         orderItems: { create: orderItemsData },
       },

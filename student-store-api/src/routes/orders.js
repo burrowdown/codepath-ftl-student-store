@@ -5,7 +5,7 @@ const Order = require("../models/order");
 const router = express.Router();
 
 const UPDATEABLE_FIELD_MAP = {
-  customer_id: "customerId",
+  customer_email: "customerEmail",
   total_price: "totalPrice",
   status: "status",
   created_at: "createdAt",
@@ -13,7 +13,10 @@ const UPDATEABLE_FIELD_MAP = {
 
 router.get("/", async (req, res, next) => {
   try {
-    const orders = await Order.list();
+    const customerEmail = typeof req.query.customer_email === "string" && req.query.customer_email.trim() !== ""
+      ? req.query.customer_email.trim()
+      : undefined;
+    const orders = await Order.list({ customerEmail });
     res.json(orders);
   } catch (err) {
     next(err);
@@ -35,7 +38,7 @@ router.get("/:order_id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const body = req.body || {};
-    const customerId = body.customer_id;
+    const customerEmail = body.customer_email;
     const items = Array.isArray(body.items)
       ? body.items.map((it) => ({
           productId: it && it.product_id,
@@ -43,7 +46,7 @@ router.post("/", async (req, res, next) => {
         }))
       : body.items;
 
-    const order = await Order.create({ customerId, items });
+    const order = await Order.create({ customerEmail, items });
     res.status(201).json(order);
   } catch (err) {
     if (err.code === "ORDER_EMPTY_ITEMS") {

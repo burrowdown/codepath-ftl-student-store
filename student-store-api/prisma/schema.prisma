@@ -38,11 +38,11 @@ model Product {
 }
 
 model Order {
-  id         Int         @id @default(autoincrement())
-  customerId Int
-  totalPrice Decimal     @db.Decimal(10, 2)
-  status     OrderStatus @default(PENDING)
-  createdAt  DateTime    @default(now())
+  id            Int         @id @default(autoincrement())
+  customerEmail String
+  totalPrice    Decimal     @db.Decimal(10, 2)
+  status        OrderStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
 
   orderItems OrderItem[]
 }

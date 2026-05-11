@@ -15,7 +15,7 @@
 #### Orders
 
 - `order_id`: Int, primary key, autoincrement
-- `customer_id`: Int (would be foreign key to Customer object in the real world but we're not doing that in this assignment)
+- `customer_email`: String (denormalized customer info; no Customer model in this assignment)
 - `total_price`: Decimal (to two digits) >=0
 - `status`: OrderStatus enum, {PENDING, PAID, SHIPPED, DELIVERED, CANCELED}, default PENDING
 - `created_at`: DateTime, default now
@@ -71,11 +71,13 @@ All error responses will be {"error": "message goes here"}
 
 - `GET /orders`: Fetch a list of all orders.
   - success response: 200, the resource
+  - QUERY PARAMS (all optional, if none present return all orders)
+    - `customer_email`: filter orders by customer email (exact match). Returns [] if no orders match.
 - `GET /orders/:order_id`: (url param: order id) Fetch details of a specific order by its ID, including the order items.
   - success response: 200, the resource, include complete child OrderItems
   - if not found: 404 with message "invalid order id"
 - `POST /orders`:
-  - post body: `{ "customer_id": 123, "items": [{ "product_id": 4, "quantity": 2 } ... ]}`
+  - post body: `{ "customer_email": "foo@example.com", "items": [{ "product_id": 4, "quantity": 2 } ... ]}`
   - Create a new Order object
   - For each Product, create an OrderItem
     - if a product doesn't exist, respond 422 with message "invalid product id: {product id}"

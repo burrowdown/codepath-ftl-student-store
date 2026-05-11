@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PaymentInfo from "../PaymentInfo/PaymentInfo";
 import CheckoutSuccess from "../CheckoutSuccess/CheckoutSuccess";
 import { calculateTaxesAndFees, calculateTotal } from "../../utils/calculations";
@@ -115,6 +116,7 @@ export default function ShoppingCart({
     <div className="ShoppingCart">
       {isOpen ? (
         <div className="open">
+          <Link to="/orders" className="past-orders-link">View past orders →</Link>
           <CartItems products={products} cart={cart} />
           <PaymentInfo
             userInfo={userInfo}
